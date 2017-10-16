@@ -1,24 +1,24 @@
-#liste des flag pour pas en avoir 2 les memes : flag1 flag2 flag3 flag4 flag5
+#liste des flag pour pas en avoir 2 les memes : flag1 flag2 flag3 flag4 flag5 flag6
 from random import *
 liste_cartes = []
 pioche = []
 couleur = 0
 periode = "pioche"
-main1 = []
-main2 = []
 flag2=0
 n=0
 liste_totale = []
 tas = []
 liste_joueurs=[]
 flag5= 0
-n_joueurs=int(input("combien de joueurs"))
-while n_joueurs>flag5 :
-    nompartiel=input("nom")
-    liste_totale.append([[nompartiel],[]])
-    flag5+=1
-def placement_possible (carte_2):
-    if (tas[0][0]==carte_2[0]) or (tas[0][0]=="nimp") or (tas[0][1]==carte_2[1]) or (carte_2[1]=="noir"):
+playtimes=0
+def lancer ():
+    n_joueurs=int(input("combien de joueurs"))
+    while n_joueurs>flag5 :
+        nompartiel=input("nom")
+        liste_totale.append([[nompartiel],[]])
+        flag5+=1
+def placement_possible (ID_joueur,ID_carte):
+    if (tas[0][0]==liste_totale[ID_joueur][1][ID_carte][0]) or (tas[0][1]==liste_totale[ID_joueur][1][ID_carte][1]) or (liste_totale[ID_joueur][1][ID_carte][1]=="noir"):
         return True
     else :
         return False
@@ -40,13 +40,19 @@ def voir_main (ID):
     while flag4<len(liste_totale[ID][1]) :
         print (flag4 ,"-->", liste_totale[ID][1][flag4][0], liste_totale[ID][1][flag4][1])
         flag4 +=1
-def jouer (joueur , index) :
-    if placement_possible(joueur[index]) :
+def jouer (ID , index) :
+    if placement_possible(ID_joueur,ID_carte) :
         del tas[0]
-        tas.append (joueur[index])
-        del joueur[index]
-    else : print ("placement impossible")
-
+        tas.append (liste_totale[ID_joueur][1][ID_carte])
+        del liste_totale[ID_joueur][1][ID_carte]
+    else :
+        print ("placement impossible")
+        return False
+def periscope ():
+    flag6 = 0
+    while flag6<len(liste_totale) :
+        print (str(liste_totale[flag6][0][0])+"-->"+ str(len(liste_totale[flag6][1])))
+        flag6+=1
 liste_couleurs = ["bleu","rouge","vert","jaune"]
 while couleur!=4 :
     #le 0 n'est présent qu'une fois par couleur, on va l'insérer
