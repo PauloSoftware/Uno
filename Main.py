@@ -13,6 +13,7 @@ flag5= 0
 playtimes=0
 def lancer ():
     n_joueurs=int(input("combien de joueurs"))
+    flag5= 0
     while n_joueurs>flag5 :
         nompartiel=input("nom")
         liste_totale.append([[nompartiel],[]])
