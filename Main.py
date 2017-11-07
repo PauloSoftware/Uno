@@ -17,6 +17,11 @@ flag7=0
 p2=0
 p4=0
 sens=1
+couleurs_fr=["jaune","vert","rouge","bleu","noir"]
+couleurs_en=["yellow","green","red","blue","black"]
+x=32
+
+
 
                         ############################
                         # On définit les fonctions #
@@ -118,14 +123,35 @@ while periode == "pioche" :
         flag7+=1
     periode = "jeu"
 
+
                         ###########################
                         # On commence le playtime #
                         ###########################
 while periode == "jeu":
+    ID_jeu=playtimes%len(liste_totale)
+    fenetre=Tk()
+    #on change les lettres aussi
+    
+    #on change les couleurs pour une lecture plus agréable
+    fg_col_tas="white"
+    bg_col_tas=couleurs_en[couleurs_fr.index(tas[0][1])]
+    if (bg_col_tas=="yellow"):
+        fg_col_tas="black"
+    frame_tas = LabelFrame(fenetre, text="Le tas", padx=10, pady=10)
+    boutontas=Button(frame_tas, text=((tas[0][0])),bg=bg_col_tas,fg=fg_col_tas, borderwidth=1,font= "arial 20 bold").grid(row=ligne, column=colonne)
+    frame_paquet = LabelFrame(fenetre, text="Votre main", padx=10, pady=10)
+    frame_tas.pack()
+    for ligne in range(1):
+        for colonne in range(len(liste_totale[ID_jeu][1])):
+            fg_col="white"
+            bg_col=couleurs_en[couleurs_fr.index(liste_totale[ID_jeu][1][colonne][1])]
+            if bg_col=="yellow":
+                fg_col="black"
+            Button(frame_paquet, text=((liste_totale[ID_jeu][1][colonne][0])),bg=bg_col,fg=fg_col, borderwidth=1,font= "arial 20 bold").grid(row=ligne, column=colonne)
+    frame_paquet.pack()
     ajoué=False
     aposé=False
     while ajoué==False:
-        ID_jeu=playtimes%len(liste_totale)
         clean(50)
         #annonce des plus 2/4 en suspens
         if p2!=0 : print("Vous avez" , p2 , "plus 2 en suspens")
