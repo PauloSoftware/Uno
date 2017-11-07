@@ -1,5 +1,6 @@
 #liste des flag pour pas en avoir 2 les memes : flag1 flag2 flag3 flag4 flag5 flag6 flag7 flag8 flag9
 from random import *
+from tkinter import *
 liste_cartes = []
 pioche = []
 couleur = 0
@@ -16,6 +17,7 @@ flag7=0
 p2=0
 p4=0
 sens=1
+
                         ############################
                         # On définit les fonctions #
                         ############################
@@ -46,9 +48,18 @@ def voir_main (ID):
         flag4 +=1
 def jouer (ID_joueur , ID_carte) :
     if placement_possible(ID_joueur,ID_carte) :
-        del tas[0]
-        tas.append (liste_totale[ID_joueur][1][ID_carte])
-        del (liste_totale[ID_joueur][1][ID_carte])
+        if (liste_totale[ID_joueur][1][ID_carte][1])=="noir":
+            flag9=input("choisissez une couleur")
+            if not flag9 in liste_couleurs :
+                return False
+            else:
+                tas.insert (0,(liste_totale[ID_joueur][1][ID_carte]))
+                tas[0][1]=flag9
+                del (liste_totale[ID_joueur][1][ID_carte])
+                return True
+        else:
+            tas.insert (0,(liste_totale[ID_joueur][1][ID_carte]))
+            del (liste_totale[ID_joueur][1][ID_carte])
         return True
     else :
         print ("placement impossible")
@@ -128,25 +139,14 @@ while periode == "jeu":
         if action_primaire<len(liste_totale[ID_jeu][1]):
             action_secondaire=liste_totale[ID_jeu][1][action_primaire]
             if jouer(ID_jeu,action_primaire) == True:
-                if tas[0][1]=="noir":
-                    flag9=input("choisissez une couleur")
-                    if not flag9 in liste_couleurs :
-                        ajoué=False
-                        aposé=False
-                    else:
-                        tas[0][1]=flag9
-                        ajoué=True
-                        aposé=True
-                else:
-                    ajoué=True
-                    aposé=True
+                ajoué = True
+                aposé = True
         elif action_primaire==len(liste_totale[ID_jeu][1]):
             action_secondaire=tas[0]
             piocher(ID_jeu,1)
             ajoué=True
         else :
             input("commande invalide !")
-        #gestion des cartes noires
         if ajoué == False :
             input("saisie invalide !")
         print (ajoué)
@@ -167,5 +167,9 @@ while periode == "jeu":
         sens=sens*(-1)
     if (action_secondaire[0]=="passe ton tour") and aposé :
         playtimes+=sens
+    if len(pioche)==0 :
+        while len(tas)>=1:
+            pioche.append(tas.pop(1))
+            shuffle (pioche)
     playtimes+=sens
     realplaytimes+=1
