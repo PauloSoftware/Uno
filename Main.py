@@ -49,6 +49,7 @@ def jouer (ID_joueur , ID_carte) :
         del tas[0]
         tas.append (liste_totale[ID_joueur][1][ID_carte])
         del (liste_totale[ID_joueur][1][ID_carte])
+        return True
     else :
         print ("placement impossible")
         return False
@@ -126,10 +127,19 @@ while periode == "jeu":
         
         if action_primaire<len(liste_totale[ID_jeu][1]):
             action_secondaire=liste_totale[ID_jeu][1][action_primaire]
-            jouer(ID_jeu,action_primaire)
-            if jouer != False:
-                ajoué=True
-                aposé=True
+            if jouer(ID_jeu,action_primaire) == True:
+                if tas[0][1]=="noir":
+                    flag9=input("choisissez une couleur")
+                    if not flag9 in liste_couleurs :
+                        ajoué=False
+                        aposé=False
+                    else:
+                        tas[0][1]=flag9
+                        ajoué=True
+                        aposé=True
+                else:
+                    ajoué=True
+                    aposé=True
         elif action_primaire==len(liste_totale[ID_jeu][1]):
             action_secondaire=tas[0]
             piocher(ID_jeu,1)
@@ -137,14 +147,10 @@ while periode == "jeu":
         else :
             input("commande invalide !")
         #gestion des cartes noires
-        if tas[0][1]=="noir":
-            flag9=input("choisissez une couleur")
-            if flag9 in liste_couleurs :
-                tas[0][1]=flag9
-            else:
-                ajoué=False
-                aposé=False
-                input("saisie invalide !")
+        if ajoué == False :
+            input("saisie invalide !")
+        print (ajoué)
+        print (aposé)
     #gestion des plus 2
     if (action_secondaire[0]=="plus 2") and aposé :
         p2+=1
